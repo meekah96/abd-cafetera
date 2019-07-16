@@ -7,6 +7,9 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('/js/app.min.js') }}" type="text/javascript"></script>
 
+<!-- datetime picker -->
+<script src="{{ asset('/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
+
 <!-- DataTable -->
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.18/b-1.5.6/cr-1.5.0/r-2.2.2/datatables.min.js"></script>
 
@@ -18,6 +21,8 @@
 
 <!-- FOrm Plugin -->
 <script src="http://malsup.github.com/jquery.form.js"></script> 
+
+
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
       user experience. Slimscroll is required when using the

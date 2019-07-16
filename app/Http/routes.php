@@ -18,17 +18,45 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
-Route::get('/admin/categoery/get-category', 'CategoryController@index');
-Route::get('/admin/categoery/edit', 'CategoryController@edit');
-Route::post('/admin/categoery/update', 'CategoryController@update');
-Route::get('/admin/categoery/create', function()
-{
-    return view('admin.cateogry.create');
-});
-Route::post('/admin/categoery/store', 'CategoryController@store');
-Route::get('/admin/categoery/delete', 'CategoryController@delete');
 
-Route::get('/user/profile/view', 'UserController@view_profile');
+Route::group(['middleware' => ['web']], function () {
+
+    Route::get('/admin/product/get-product', 'ProductController@index');
+    Route::get('/admin/product/edit', 'ProductController@edit');
+    Route::post('/admin/product/update', 'ProductController@update');
+    Route::get('/admin/product/create', function()
+    {
+        return view('admin.product.create');
+    });
+    Route::post('/admin/product/store', 'ProductController@store');
+    Route::get('/admin/product/delete', 'ProductController@delete');
+    Route::get('/admin/product/view-image/{product_id}/{file_name}', 'ProductController@get_product_image');
+
+    Route::get('/admin/order/view', 'UserController@view_admin_orders');
+    
+
+    Route::get('/user/profile/view', 'UserController@view_profile');
+
+    //customer
+    Route::get('/customer/product/view', 'UserController@view_my_purcases');
+    Route::get('/customer/product/cancel', 'UserController@cancel_purchase');
+
+    //chef
+    Route::get('/chef/product/view', 'UserController@view_cheff_orders');
+    Route::get('/chef/order/preperation', 'UserController@change_status');
+
+    //deliver-boy
+    Route::get('/deliver-boy/product/view', 'UserController@view_deliver_orders');
+    Route::get('/deliver-boy/my-product/view', 'UserController@view_my_deliver_orders');
+
+    //receiptent
+    Route::get('/receiptent/product/view', 'UserController@view_ready_orders');
+    
+    
+
+});
+
+
 
 
 

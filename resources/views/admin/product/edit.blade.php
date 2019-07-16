@@ -16,37 +16,66 @@ Home
 
 @section('main-content')
 
-<form id="frm_update_category" class="form" role="form" method="POST" action="{{ url('/admin/categoery/update') }}">
+<form id="frm_update_category" class="form" role="form" method="POST" action="{{ url('/admin/product/update') }}">
 
 	{!! csrf_field() !!}
-	<input type="hidden" id="id" class="form-control input-sm" name="id" value="{{$category->id}}">
+	<input type="hidden" id="id" class="form-control input-sm" name="id" value="{{$product->id}}">
 
 
 	<div class="row">
 
-		<div class="col-md-12">
+		<div class="col-md-6">
 			<div class="form-group">
-				<label class="control-label">Category Name</label>
-				<input type="text" id="name" class="form-control input-sm" name="name" value="{{$category->name}}">
+				<label class="control-label">Product Name</label>
+					<input type="text" value="{{$product->title}}" id="name" class="form-control input-sm" name="name">
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">Product Quanity</label>
+				<input type="text" value="{{$product->quantity}}" id="quantity" class="form-control input-sm" name="quantity">
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">Product Price</label>
+				<input type="text" value="{{$product->price}}" id="price" class="form-control input-sm" name="price">
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">Product Type</label>
+				<select type="name" class="form-control input-sm" name="type">
+					<option value="">Please Select</option>
+					<option @if($product->type == 1) selected="selected" @endif value="1">Sri Lankan</option>
+					<option @if($product->type == 2) selected="selected"  @endif value="2">Chinese</option>
+				</select>
 			</div>
 		</div>
 
 		<div class="col-md-12">
 			<div class="form-group">
 				<label class="control-label">Description</label>
-				<textarea id="description" class="form-control input-sm"
-					name="description">{{$category->description}}</textarea>
+				<textarea id="description" class="form-control input-sm" name="description">{{$product->description}}</textarea>
 			</div>
 		</div>
 
 		<div class="col-md-12">
 			<div class="form-group">
-				<label class="control-label">Comment</label>
-				<textarea id="comment" class="form-control input-sm" name="comment">{{$category->comment}}</textarea>
+				<label for="picture">Insert Picture</label>
+				<input type="file" name="picture" class="form-control-file" id="picture">
 			</div>
 		</div>
 
-	</div>
+		<div class="col-md-12">
+			<div class="form-group">
+				<label for="picture">Inserted Picture</label>
+			<img style="height: 300px; border: 1px solid gainsboro;" id="product_pic" src='/admin/product/view-image/{{$product->id}}/{{$product->image}}' alt="product_pic">
+			</div>
+		</div>
 
 
 
@@ -63,6 +92,8 @@ Home
 <script>
 	$(document).ready(function()
 		{
+
+
 			$.validator.setDefaults({
 			ignore: '', // ignore hidden fields
 			errorClass: 'validation-error-label',
@@ -99,7 +130,7 @@ Home
 			
 			$('#btn-cancel').on('click', function()
 			{
-				window.location = '/admin/categoery/get-category';
+				window.location = '/admin/product/get-product';
 			});
 
 			$("#frm_update_category").validate({
@@ -118,7 +149,7 @@ Home
 							closeOnConfirm: true
 							}).then( function()
 							{
-								window.location = '/admin/categoery/get-category';
+								window.location = '/admin/product/get-product';
 							});
 						}
 
@@ -139,10 +170,24 @@ Home
 					});
 				},
 				rules: {
-					name: 'required'  
+				name: 'required',
+				description: 'required',
+				type: 'required',
+				price: {
+					required: true,
+					number: true
+				}, 
+				quantity:{
+					required: true,
+					number: true
+				}
 				},
 				messages: {
-					name: 'Please verify Name'
+					name: 'Please verify Name',
+					description: 'Please verify description',
+					type: 'Please verify Type',
+					price: { required: 'Please verify Price', number: 'Price can be only in digits'},
+					quantity: { required: 'Please verify Quantity', number: 'Quantity can be only in digits'}
 				}
         	});
 

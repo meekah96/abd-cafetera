@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Sentinel;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
+       view()->composer('*', function ($view) {
+
+        if (Auth()->user()) {
+            $view->with('user', Auth()->user());
+        } else {
+            $view->with('user', null);
+        }
+
+        });
     }
 
     /**

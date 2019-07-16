@@ -15,7 +15,7 @@
 
 @section('header-content')	
 <div >
-<h3>Category</h3>
+<h3>Product</h3>
 </div>
 <div class="row">
 	
@@ -28,7 +28,7 @@
 @section('main-content')
 	<div class="row col-md-12">
 		<div class="text-right">
-			<button id="add_category" class="btn btn-success header-button" ><i class="fa fa-btn fa-add"></i> ADD CATEGORY</button>
+			<button id="add_category" class="btn btn-success header-button" ><i class="fa fa-btn fa-add"></i> ADD PRODCUT</button>
 		</div>
 	</div>
 	
@@ -37,8 +37,9 @@
 			<tr>
 				<th>Actions</th>
 				<th>Name</th>
-				<th>Descriprion</th>
-				<th>Comment</th>
+				<th>Type</th>
+				<th>Price</th>
+				<th>Quantity</th>
 				<th>Created At</th>
 			</tr>
 		</thead>
@@ -53,7 +54,7 @@
 
 				swal.fire({
 				title: 'Are you sure?',
-				text: 'You are going to delete this category!',
+				text: 'You are going to delete this product!',
 				type: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#dd6b55',
@@ -61,9 +62,14 @@
 				confirmButtonText: 'Yes!',
 				cancelButtonText: 'No',
 				closeOnConfirm: false
-				}).then( function()
-				{
-					window.location='/admin/categoery/delete?id='+id;
+				}).then( function(isConfirm)
+				{	
+
+					if(isConfirm.value)
+					{
+						window.location='/admin/product/delete?id='+id;
+					}
+					
 				});
 					
 		}
@@ -71,21 +77,27 @@
 		$(document).ready(function()
 		{
 			$('#cateogry_grid').DataTable({
-				"ajax" : '/admin/categoery/get-category?type=json',
+				"ajax" : '/admin/product/get-product?type=json',
 				'columns': [
 					{
 						'data': 'id',
 						'sortable': false,
 						'render': function(data, type, full) {
 							var html = '';
-							html += '<a href="/admin/categoery/edit?id='+data+'" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
+							html += '<a href="/admin/product/edit?id='+data+'" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
 							html += '<a onclick="delete_question('+data+')" type="button" class="btn btn-danger btn-xs dt-delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>';
 							return html;
 						}
 					},
-					{'data': 'name'},
-					{'data': 'description'},
-					{'data': 'comment'},
+					{'data': 'title'},
+					{'data': 'type',
+					'render': function(data, type, full) {
+							if(type == 1) return 'Sri Lankane';
+							else return 'Chinese';
+					}
+						},
+					{'data': 'price'},
+					{'data': 'quantity'},
 					{'data': 'created_at'}
 				]
 			})
@@ -94,7 +106,7 @@
 
 		$('#add_category').on('click', function()
 		{
-			window.location = '/admin/categoery/create';
+			window.location = '/admin/product/create';
 		})
 	</script>
 @endsection

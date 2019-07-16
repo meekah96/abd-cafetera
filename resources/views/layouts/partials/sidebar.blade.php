@@ -33,16 +33,19 @@
         <ul class="sidebar-menu">
             <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>Dashboard</span></a></li>
-            <li><a href="#"><i class='fa fa-users'></i> <span>Users</span></a></li>
-            <li><a href="/admin/categoery/get-category"><i class='fa fa-pencil-square-o'></i> <span>Category</span></a></li>
-            <li class="treeview">
-                <a href="#"><i class='fa fa-line-chart'></i> <span>Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
+            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>Dashboard</span></a></li> 
+           @if($user->inRole('admin')) <li><a href="/admin/order/view"><i class='fa fa-user'></i> <span>Administrator</span></a></li> @endif
+           @if($user->inRole('admin') || $user->inRole('customer') ) <li><a href="/customer/product/view"><i class='fa fa-line-chart'></i> <span>My Purcahse Record</span></a></li>  @endif
+           @if($user->inRole('admin') || $user->inRole('chef') ) <li><a href="/chef/product/view"><i class='fa fa-coffee'></i> <span>Chef Managment</span></a></li> @endif
+           @if($user->inRole('admin')) <li><a href="/admin/product/get-product"><i class='fa fa-pencil-square-o'></i> <span>Products</span></a></li> @endif
+           @if($user->inRole('admin') || $user->inRole('receiptent')) <li><a href="/receiptent/product/view"><i class='fa fa-users'></i> <span>Receiptent</span></a></li> @endif
+           @if($user->inRole('admin') || $user->inRole('deliver-boy'))  <li class="treeview">
+                <a href="#"><i class='fa fa-users'></i> <span>Delivery Managment</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Monthly Report</a></li>
-                    <li><a href="#">User Report</a></li>
+                    <li><a href="/deliver-boy/product/view">All Delivery</a></li>
+                    <li><a href="/deliver-boy/my-product/view">My Delivery</a></li>
                 </ul>
-            </li>
+            </li> @endif
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

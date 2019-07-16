@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\Role;
+
 class User extends Authenticatable
 {
     /**
@@ -23,4 +25,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    function inRole($role_slug)
+    {
+        $role = User::join('roles_master', 'roles_master.id', '=', 'users.role_id')
+                    ->where('users.id', '=', $this->id)->pluck('roles_master.slug')->first();
+
+        if($role_slug == $role) return true;
+        else return false;
+    }
 }
