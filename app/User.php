@@ -35,4 +35,9 @@ class User extends Authenticatable
         if($role_slug == $role) return true;
         else return false;
     }
+
+    public function more_details()
+    {
+        return $this->hasOne('App\UserDetails','user_id');
+    }
 }

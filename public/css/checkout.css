@@ -1,0 +1,98 @@
+
+/* ---------------------------------
+13. CHECKOUT
+--------------------------------- */
+.checkout{
+    background-color: #231912;
+    padding: 20px 0px 0px 0px;
+    background: linear-gradient( rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8) ), url('../images/checkout.png');
+    background-attachment: fixed; 
+
+    background-size: cover; 
+    background-position: center;
+}
+
+.checkout h5{
+    font-size: 2rem;
+    margin: 10px 0px;
+    color: #fff;
+}
+
+.checkout table{
+    border: solid #000 2px;
+}
+
+.checkout co-thead{
+    background-color: #373a3c; 
+    color: #fff;
+    text-align: center;
+}
+
+.checkout co-tbody{
+    background: rgba(0, 0, 0, 0.61);
+    border: solid #000000 2px;
+    color: rgba(255, 255, 255, 0.75); 
+}
+
+
+/*------ Form -------*/
+/*
+.checkout label{
+    color: #fff;
+    display: none !important;
+}
+*/
+
+
+
+
+.checkout input,
+.checkout textarea,
+.checkout select,
+.checkout
+
+{
+    background-color: transparent !important;
+    border-top: hidden !important;
+    border-left: hidden !important;
+    border-right: hidden !important;
+    border-radius: 0 !important;
+    border-color: #0ddb0d !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    
+}
+
+.checkout, select, option{
+    color: #000;
+}
+
+::placeholder, select{ 
+  color: rgba(255, 255, 255, 0.51) !important;
+}
+
+hr{
+    border: solid #fff 1px; 
+    display: none;
+}
+
+
+@media screen and (max-width: 1012px) { 
+    .checkout{
+        padding-bottom: 1100px;
+    }
+    
+    form{
+        
+/*        margin-bottom: 50px;*/
+        display:block;
+        width:100%;
+        overflow-x: hidden;
+
+    }
+    
+    hr{
+    border: solid #fff 1px; 
+    display: block;
+}
+}
+

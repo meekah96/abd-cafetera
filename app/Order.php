@@ -10,7 +10,7 @@ class Order extends Model
     protected $table = 'order_master';
     
     protected $fillable = [
-        'order_by', 'reference_no', 'venue', 'status', 'updated_by' , 'preparation_time', 'pick_time'
+        'type','order_by', 'reference_no', 'venue', 'status', 'updated_by' , 'preparation_time', 'pick_time'
     ];
 
 

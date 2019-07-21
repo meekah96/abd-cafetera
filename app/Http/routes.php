@@ -1,5 +1,5 @@
 <?php
-
+use App\Product;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -12,12 +12,24 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $products = Product::all();
+    return view('welcome', compact('products'));
 });
 
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/show/cart', function()
+{
+    return view('admin.product.cart');
+});
+
+
+Route::post('/general/post-order', 'ProductController@post_order');
+
+
 
 Route::group(['middleware' => ['web']], function () {
 
@@ -31,7 +43,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/product/store', 'ProductController@store');
     Route::get('/admin/product/delete', 'ProductController@delete');
     Route::get('/admin/product/view-image/{product_id}/{file_name}', 'ProductController@get_product_image');
-
+    Route::get('/admin/product/get-product-by-id', 'ProductController@get_product_by_id');
+    
     Route::get('/admin/order/view', 'UserController@view_admin_orders');
     
 

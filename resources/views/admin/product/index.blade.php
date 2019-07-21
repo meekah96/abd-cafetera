@@ -92,7 +92,7 @@
 					{'data': 'title'},
 					{'data': 'type',
 					'render': function(data, type, full) {
-							if(type == 1) return 'Sri Lankane';
+							if(data == 1) return 'Sri Lankan';
 							else return 'Chinese';
 					}
 						},
