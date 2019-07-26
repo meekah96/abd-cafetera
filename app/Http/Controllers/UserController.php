@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Order;
 use App\Deliver;
+use App\User;
+use App\UserDetails;
+use Mail;
 
 class UserController extends Controller
 {
@@ -63,8 +66,10 @@ class UserController extends Controller
 
     public function change_status(Request $request)
     {
+        
 
         $order = Order::find($request->id);
+        
 
         if(isset($request->prepration_time) && $request->prepration_time != '')
         {
@@ -79,6 +84,41 @@ class UserController extends Controller
             $deliver = Deliver::where('order_id', '=', $request->id)->first();
             $deliver->deliverd_by =  $this->AuthUser->id;
             $deliver->save();
+
+            $subject = 'Your Order Has Accepted';
+            $content = 'Hi,<br>
+            Delivery person should arrive to your given address within one hour. You can track your order’s status
+            from Your Purchases. Please note that, require feedback on delivery via push notification SMS.<br>
+            <br>
+            <ol>
+                <li> Delivery Person Name : '.$this->AuthUser->name.' </li>
+                <li> Delivery Person Contact Number : 075645645 </li>
+            </ol>
+            <br>
+            Thanks for purchasing on ABC cafeteria. You can contact us anytime at 077 5938 363 or
+            abcCafeteria@gmail.com.<br>
+            <br>
+            Regards,<br>
+            <strong>ABC Cafeteria Team</strong>';
+
+            if($order->order_by == 5)
+            {
+                
+                $mail = User::where('id', '=', $order->order_by)->pluck('email')->first();
+
+                Mail::send('email.index', ['body' => $content], function ($m) use ($subject, $mail) {
+                    $m->from('abc-cafeterita@gmail.com', ('Contact Mail'));
+                   $m->to($mail)->subject($subject);
+                });
+            }
+            else
+            {
+                $mail = UserDetails::where('id', '=', $order->order_by)->pluck('email')->first();
+                Mail::send('email.index', ['body' => $content], function ($m) use ($subject, $mail) {
+                    $m->from('abc-cafeterita@gmail.com', ('Contact Mail'));
+                   $m->to($mail)->subject($subject);
+                });
+            }
         }
 
         else if(isset($request->delivered_finish) && $request->delivered_finish != '')
@@ -120,7 +160,7 @@ class UserController extends Controller
 
         if(isset($request->type) && $request->type == 'json')
         {
-            $orders = Order::join('delivery_master', 'delivery_master.order_id',  '=', 'order_master.id')
+            $orders = Order::Leftjoin('delivery_master', 'delivery_master.order_id',  '=', 'order_master.id')
                             ->Leftjoin('users', 'users.id',  '=', 'delivery_master.deliverd_by')
                             ->whereIn('status', [2,3])
                             ->where('order_master.type', '=' , 2)

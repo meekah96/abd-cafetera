@@ -28,7 +28,7 @@ Route::get('/show/cart', function()
 
 
 Route::post('/general/post-order', 'ProductController@post_order');
-
+Route::get('/general/send-email', 'ProductController@send_mail');
 
 
 Route::group(['middleware' => ['web']], function () {

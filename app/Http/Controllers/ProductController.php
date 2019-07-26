@@ -16,13 +16,14 @@ use App\UserDetails;
 use App\ProductOrder;
 
 use Sentinel;
+use Mail;
 
 class ProductController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('auth', ['except' => ['get_product_image', 'get_product_by_id', 'post_order']]);
+        $this->middleware('auth', ['except' => ['get_product_image', 'get_product_by_id', 'post_order', 'send_mail']]);
         $this->AuthUser = Auth()->user();
        // $this->AuthUser = Sentinel::getUser(); 
     }
@@ -136,6 +137,18 @@ class ProductController extends Controller
         return redirect('/admin/product/get-product');
     }
 
+    public function send_mail(Request $request)
+    {
+        $subject = 'test email';
+        $content = 'hi,<br> This is a dummy content';
+
+        Mail::send('email.index', ['body' => $content], function ($m) use ($subject) {
+            $m->from('abc-cafeterita@gmail.com', ('Contact Mail'));
+           $m->to('mr.meekah96@gmail.com')->subject($subject);
+        });
+    }
+
+
     public function post_order(Request $request)
     {
 
@@ -147,9 +160,24 @@ class ProductController extends Controller
         $lastIncreament++;
         $order_ref_no = 'ORD'. str_pad($lastIncreament,4,'0',STR_PAD_LEFT);
 
+        if($request->customer_type != 1 )
+        {
+            $customer = UserDetails::create([
+                'user_id' => 0,
+                'type' => 2,
+                'first_name' => $request->fname,
+                'last_name' => $request->lname,
+                'address' => $request->address,
+                'city' => $request->inputCity,
+                'state' => $request->inputState,
+                'zip' => $request->inputZip,
+                'email' => $request->inputEmail,
+            ]);
+        }
+
         $Order = Order::create([
             'type' =>$request->pick_type,
-            'order_by' => ($request->customer_type == 1 ? $this->AuthUser->id : 0 ),
+            'order_by' => ($request->customer_type == 1 ? $this->AuthUser->id : $customer->id),
             'reference_no' => $order_ref_no,
             'venue' =>$request->inputCity,
             'status' =>0,
@@ -179,19 +207,7 @@ class ProductController extends Controller
             ]);
         }
 
-        if($request->customer_type != 1 )
-        {
-            $customer = UserDetails::create([
-                'user_id' => 0,
-                'type' => 2,
-                'first_name' => $request->fname,
-                'last_name' => $request->lname,
-                'address' => $request->address,
-                'city' => $request->inputCity,
-                'state' => $request->inputState,
-                'zip' => $request->inputZip,
-            ]);
-        }
+        
 
         if($request->pick_type == 2 )
         {
@@ -218,6 +234,28 @@ class ProductController extends Controller
             'paid' => $request->total,
             'balance' => 0
         ]);
+
+        $subject = 'Order Confirmation';
+        $content = 'Hello, <br>
+        Thank you for your order! A record of your purchase information appears below.<br>
+        Please keep this email as the confirmation of your order’s payment.<br>
+        <br>
+        <strong>Order Information</strong><br>
+        <ol>
+            <li> Bill Number : '.$bill_ref_no.'</li> 
+            <li> Confirmation Number : '.$order_ref_no.'</li> 
+        </ol>
+        If you have questions about this order, you can simply reply to this email with your questions and we
+        will get back to you shortly with an answer.<br>
+        Thanks again for your purchasing! We appreciate that you’ve chosen us.<br>
+        <br>  
+        Thanks,<br>
+        <strong>ABC Cafeteria Team</strong>';
+
+        Mail::send('email.index', ['body' => $content], function ($m) use ($subject, $request) {
+            $m->from('abc-cafeterita@gmail.com', ('Contact Mail'));
+           $m->to($request->inputEmail)->subject($subject);
+        });
 
         return response()->json('success');
         

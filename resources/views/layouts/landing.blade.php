@@ -386,12 +386,17 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                                                         id="inputAddress2" name="address2" rows="2" placeholder="Address 2 (Optional)"
                                                         target="_blank"></textarea>
                                             </div>
-                                             <div class="form-group col-md-6">
+                                             <div class="form-group col-md-4">
                                                 <!--                                <label for="inputCity">City</label>-->
                                                 <input type="text" class="form-control" id="inputCity" name="inputCity" target="_blank"
                                                 value="{{($user &&$user->more_details) ? $user->more_details->city : '' }}" placeholder="City">
                                             </div>
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-4">
+                                                <!--                                <label for="inputCity">City</label>-->
+                                                <input type="text" class="form-control" id="inputEmail" name="inputEmail" target="_blank"
+                                                value="{{($user &&$user->more_details) ? $user->more_details->email : '' }}" placeholder="Email">
+                                            </div>
+                                            <div class="form-group col-md-4">
                                                 <!--                                <label for="inputState">State</label>-->
                                                 <select id="inputState" name="inputState" class="form-control" target="_blank">
                                                     <option selected>State</option>
